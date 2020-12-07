@@ -94,8 +94,8 @@ const PostModel = {
             SELECT post.id
             FROM post
             WHERE post.author_id = ?
-               OR post.author_id IN (SELECT follow.user_id FROM follow WHERE follow.follower_id = ? AND follow.delete_time IS NULL)
-               ORDER BY post.create_time DESC
+            OR post.author_id IN (SELECT follow.user_id FROM follow WHERE follow.follower_id = ? AND follow.delete_time IS NULL)
+            ORDER BY post.create_time DESC
         `;
 
         return query(statement, [userId, userId], (rows) => {

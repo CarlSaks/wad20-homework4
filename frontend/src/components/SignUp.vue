@@ -1,4 +1,4 @@
-<template>
+ <template>
     <section class="form-page">
         <section id="form-container">
             <div class="success" v-if="success">
