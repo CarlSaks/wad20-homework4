@@ -6,8 +6,6 @@ const PostModel = require('../models/PostModel');
 
 router.get('/', authorize, (request, response) => {
 
-    console.log(request.currentUser.id)
-
     // Endpoint to get posts of people that currently logged in user follows or their own posts
 
     PostModel.getAllForUser(request.currentUser.id, (postIds) => {
@@ -29,7 +27,7 @@ router.post('/', authorize,  (request, response) => {
     // Endpoint to create a new post
 
     let data = {
-        userId: 1,
+        userId: request.currentUser.id,
         text: request.body.text,
         media: {
             type: request.body.media.type,
@@ -49,7 +47,7 @@ router.put('/:postId/likes', authorize, (request, response) => {
 
     let postId = request.url.split("/")[1]
 
-    PostModel.like(1, postId, () => {
+    PostModel.like(request.currentUser.id, postId, () => {
         response.status(200).json()
     })
 
@@ -61,7 +59,7 @@ router.delete('/:postId/likes', authorize, (request, response) => {
 
     let postId = request.url.split("/")[1]
 
-    PostModel.unlike(1, postId, () => {
+    PostModel.unlike(request.currentUser.id, postId, () => {
         response.status(200).json()
     })
 

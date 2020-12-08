@@ -10,16 +10,16 @@ module.exports = (request, response, next) => {
         decoded user from access token.
     */
 
-    if (acce.headers.authorization) {
-        let userId = acce.params.userId;
-        let accessToken = acce.headers.authorization.slice(7);
-        let authorized = verifyAccessToken(accessToken);
+    if (request.headers.authorization) {
+        const accessToken = request.headers.authorization.slice(7);
+        const authorized = verifyAccessToken(accessToken);
 
         if (!authorized) {
-            response.json({ code: 'unauthorized'}, 401);
+            response.status(401).json('unauthorized')
             return;
         }
-        UserModel.getById(authorized.userId, (user) => {
+
+        UserModel.getById(authorized.id, (user) => {
             request.currentUser = user;
             next();
         });
