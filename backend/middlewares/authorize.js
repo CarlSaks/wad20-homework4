@@ -1,3 +1,4 @@
+const { verifyAccessToken } = require('../library/jwt');
 const UserModel = require('../models/UserModel');
 
 module.exports = (request, response, next) => {
@@ -9,8 +10,16 @@ module.exports = (request, response, next) => {
         decoded user from access token.
     */
 
-    if (request.headers.authorization) {
-        UserModel.getById(1, (user) => {
+    if (acce.headers.authorization) {
+        let userId = acce.params.userId;
+        let accessToken = acce.headers.authorization.slice(7);
+        let authorized = verifyAccessToken(accessToken);
+
+        if (!authorized) {
+            response.json({ code: 'unauthorized'}, 401);
+            return;
+        }
+        UserModel.getById(authorized.userId, (user) => {
             request.currentUser = user;
             next();
         });
