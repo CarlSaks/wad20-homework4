@@ -106,16 +106,45 @@ describe('Posts', () => {
 
     //Test that exactly as many posts are rendered as contained in testData variable
     it('count post', function () {
-        const postsArray = wrapper.findAll("post");
+
+        let postsArray = wrapper.findAll(".post");
         expect(postsArray.length).toBe(testData.length);
     });
 
     //Test that if post has media property, image or video tags are rendered depending on media.
     //type property, or if media property is absent nothing is rendered.
+    it('media property', function () {
+
+        let posts = wrapper.findAll(".post")
+
+        Array.prototype.forEach.call(posts, (i) => {
+
+            let img = i.findComponent('img')
+            let video = i.findComponent('video')
+
+            if (img && i.media.type === 'image') {
+                expect(img.exists()).toBe(true);
+                expect(video.exists()).toBe(false);
+            } else if (video && i.media.type === 'video') {
+                expect(video.exists()).toBe(true);
+                expect(img.exists()).toBe(false);
+            } else {
+                expect(video.exists()).toBe(false);
+                expect(img.exists()).toBe(false);
+            }
+        });
+    });
 
     //Test that post create time is displayed in correct format: Saturday, December 5, 2020 1:53 PM
+    it('time format', () => {
 
+        let posts = wrapper.findAll('.post-author')
 
+        Array.prototype.forEach.call(posts, (i) => {
+            let time = i.findComponent('small')
 
+            expect(time).toBe(moment(time).format('LLLL'))
+        });
+    });
 
 });
