@@ -103,4 +103,19 @@ describe('Posts', () => {
     it('1 == 1', function () {
         expect(true).toBe(true)
     });
+
+    //Test that exactly as many posts are rendered as contained in testData variable
+    it('count post', function () {
+        const postsArray = wrapper.findAll("post");
+        expect(postsArray.length).toBe(testData.length);
+    });
+
+    //Test that if post has media property, image or video tags are rendered depending on media.
+    //type property, or if media property is absent nothing is rendered.
+
+    //Test that post create time is displayed in correct format: Saturday, December 5, 2020 1:53 PM
+
+
+
+
 });
